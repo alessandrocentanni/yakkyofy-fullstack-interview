@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+
+  #client:
+    #image: client-image
+    # volumes:
+    #   - ./client:/app
+    # ports:
+    #   - "client_port:container_port"
+    # networks:
+    #   - app_network
+
+  #server:
+    #image: server-image
+    # volumes:
+    #   - ./server:/app
+    # ports:
+    #   - "server_port:container_port"
+    # networks:
+    #   - app_network
+
+  #consumer:
+    #image: consumer-image
+    # volumes:
+    #   - ./consumer:/app
+    # networks:
+    #   - app_network
+
+  mongodb:
+    image: mongo
+    volumes:
+      - ./mongo_data:/data/db
+    ports:
+     - "27017:27017"
+    networks:
+     - app_network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+     - "5672:5672"
+     - "15672:15672"
+    hostname: rabbitmq
+    environment:
+     - RABBITMQ_DEFAULT_USER=user
+     - RABBITMQ_DEFAULT_PASS=password
+    volumes:
+       - ./rabbitmq_data:/var/lib/rabbitmq
+    networks:
+       - app_network
+
+networks:
+  app_network:
+    driver: bridge
